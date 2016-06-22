@@ -14,6 +14,15 @@ exports.serveAssets = function(res, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...),
   // css, or anything that doesn't change often.)
+  if(asset === "/") {asset = "/index.html"};
+    fs.readFile('./public' + asset, "utf-8", function sendBack(err, data) { // data is the contents of the file
+      if(err) {
+        console.log(err)
+      }
+      res.writeHeader(200, {'Content-Type': 'text/html'})
+      res.end(data);
+    })
+
 };
 
 
