@@ -9,6 +9,8 @@ var _ = require('underscore');
  * customize it in any way you wish.
  */
 
+exports.urlArray = [];
+
 exports.paths = {
   siteAssets: path.join(__dirname, '../web/public'),
   archivedSites: path.join(__dirname, '../archives/sites'),
@@ -25,17 +27,51 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+// fs.append to write to the text file
+exports.readListOfUrls = function(url){
+  fs.readFile('../archives/sites.txt', "utf-8", function (err, data) { // data is the contents of the file
+    if(err) {
+      console.log(err)
+    }
+    urlArray = data.toString().split('/n');
+    exports.isUrlInList(url, urlArray);
+  });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(url, array){
+  //should check sites.txt line by line and see if it's in the file
+  //should return a boolean
+    //if true, need to somehow wait for url to be archived
+    //if false, check isUrlArchived
+    var urlFound = false;
+    for(var i = 0; i < array.length; i++) {
+      if(array[i] === url) {
+        urlFound = true;
+      }
+    }
+    if(urlFound) {
+      console.log("url found!")
+    }
+    else{
+      fs.appendFile(exports.paths.list, url+"\n", function (err) {
+        if (err){(console.log(err));};
+        console.log("site appended!")
+      });
+
+    }
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(url){
+  //write url to sites.txt file using fs.writeFile
+
 };
 
-exports.isUrlArchived = function(){
+exports.isUrlArchived = function(url){
+  //should return a boolean
+    //if false, call addUrlToList and pass in the url
+    //if true, call downloadUrls
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(url){
+  //should res.end the html file saved in the sites folder
 };
